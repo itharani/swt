@@ -6,14 +6,14 @@ import os
 import instructor
 
 client = instructor.from_openai(
-        AzureOpenAI(api_key=os.getenv("api_key"),
-                    api_version=os.getenv("llm_api_version"),
-                    azure_endpoint=os.getenv("base_url"),
-                    azure_deployment=os.getenv("model_deployment"))
+        AzureOpenAI(api_key=os.getenv("API_KEY"),
+                    api_version=os.getenv("LLM_API_VERSION"),
+                    azure_endpoint=os.getenv("BASE_URL"),
+                    azure_deployment=os.getenv("MODEL_DEPLOYMENT"),)
     )
 
 # Load API keys from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("API_KEY")
 github_token = os.getenv("GITHUB_TOKEN")
 
 # Initialize GitHub client
