@@ -83,6 +83,7 @@ def save_test(file_name, test_script, test_type="unit"):
         f.write(test_script)
     print(f"Test script saved as {test_file_name}")
 
+
 # Generate unit tests for all files in the repo
 def generate_tests_for_repo():
     files = fetch_files()
