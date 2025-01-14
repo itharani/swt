@@ -37,7 +37,7 @@ jobs:
           MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}
           
       - name: Execute Python script
-        run: python main.py  # Execute the script with environment variables available
+        run: python src/main.py  # Execute the script with environment variables available
 
       - name: Commit files
         run: |
