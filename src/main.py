@@ -21,7 +21,7 @@ github_token = os.getenv("GITHUB_TOKEN")
 
 # Fetch files from the local 'test-files' folder
 def fetch_files():
-    folder_path = "/Users/Dev/projects/Maybank/swt/testfiles"  # Path to the folder where test files are located
+    folder_path = "testfiles"  # Path to the folder where test files are located
     files = []
     
     # Iterate over files in the directory
