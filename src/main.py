@@ -4,20 +4,23 @@ from openai import AzureOpenAI
 from dotenv import load_dotenv
 import os
 import instructor
+import subprocess
 
+load_dotenv()
+
+# Setup instructor and OpenAI API clients
 client = instructor.from_openai(
-        AzureOpenAI(api_key=os.getenv("API_KEY"),
-                    api_version=os.getenv("LLM_API_VERSION"),
-                    azure_endpoint=os.getenv("BASE_URL"),
-                    azure_deployment=os.getenv("MODEL_DEPLOYMENT"),)
+    AzureOpenAI(
+        api_key=os.getenv("API_KEY"),
+        api_version=os.getenv("LLM_API_VERSION"),
+        azure_endpoint=os.getenv("BASE_URL"),
+        azure_deployment=os.getenv("MODEL_DEPLOYMENT"),
     )
+)
 
 # Load API keys from environment variables
 openai.api_key = os.getenv("API_KEY")
 github_token = os.getenv("GITHUB_TOKEN")
-
-# Initialize GitHub client
-# g = Github(github_token)
 
 # Fetch files from the local 'test-files' folder
 def fetch_files():
@@ -57,7 +60,7 @@ def generate_test(code_snippet, test_type="unit"):
     """
     # Use the client to generate a response from the model
     response = client.chat.completions.create(
-        model=os.getenv("model_name"),
+        model=os.getenv("MODEL_NAME"),
         response_model=None,
         messages=[{"role": "system", "content": prompt}],
         temperature=0.1
@@ -83,8 +86,17 @@ def save_test(file_name, test_script, test_type="unit"):
         f.write(test_script)
     print(f"Test script saved as {test_file_name}")
 
-# Generate unit tests for all files in the repo
-def generate_tests_for_repo():
+# Run unit tests with Wolverine
+def run_tests():
+    test_dir = "tests/unit"
+    test_files = [os.path.join(test_dir, f) for f in os.listdir(test_dir) if f.endswith("_test.py")]
+
+    for test_file in test_files:
+        print(f"Running test: {test_file}")
+        subprocess.run(["python", "-m", "wolverine", test_file], check=True)
+
+# Generate unit tests for all files in the repo and run them
+def generate_and_run_tests():
     files = fetch_files()
     
     for file in files:
@@ -93,6 +105,9 @@ def generate_tests_for_repo():
         # Generate and save only unit tests
         unit_test_script = generate_test(content, test_type="unit")
         save_test(file['name'], unit_test_script, test_type="unit")
+    
+    # Run all generated unit tests
+    run_tests()
 
 if __name__ == "__main__":
-    generate_tests_for_repo()
+    generate_and_run_tests()
