@@ -72,8 +72,8 @@ The pipeline will be expanded to include the following capabilities:
     ```
     on:
         push:
-            branches:
-                - {new-branch-namee}  
+            paths:
+                - 'testfiles/**'  
         pull_request:
             branches:
                 - {new-branch-name}  
