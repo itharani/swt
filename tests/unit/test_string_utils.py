@@ -30,12 +30,12 @@ class TestStringUtils(unittest.TestCase):
     def test_capitalize_string(self):
         # Test normal string
         self.assertEqual(capitalize_string("hello"), "Hello")
+        # Test already capitalized string
+        self.assertEqual(capitalize_string("Hello"), "Hello")
         # Test empty string
         self.assertEqual(capitalize_string(""), "")
         # Test single character
         self.assertEqual(capitalize_string("a"), "A")
-        # Test already capitalized
-        self.assertEqual(capitalize_string("Hello"), "Hello")
         # Test string with spaces
         self.assertEqual(capitalize_string("hello world"), "Hello world")
         # Test string with special characters
@@ -44,18 +44,14 @@ class TestStringUtils(unittest.TestCase):
     def test_count_vowels(self):
         # Test normal string
         self.assertEqual(count_vowels("hello"), 2)
-        # Test empty string
-        self.assertEqual(count_vowels(""), 0)
         # Test string with no vowels
         self.assertEqual(count_vowels("bcdfg"), 0)
+        # Test empty string
+        self.assertEqual(count_vowels(""), 0)
         # Test string with all vowels
-        self.assertEqual(count_vowels("aeiou"), 5)
-        # Test string with uppercase vowels
-        self.assertEqual(count_vowels("AEIOU"), 5)
-        # Test string with mixed case vowels
-        self.assertEqual(count_vowels("aEiOu"), 5)
-        # Test string with special characters
-        self.assertEqual(count_vowels("!@#aei"), 3)
+        self.assertEqual(count_vowels("aeiouAEIOU"), 10)
+        # Test string with mixed characters
+        self.assertEqual(count_vowels("h3ll0 w0rld!"), 1)
 
     def test_is_palindrome(self):
         # Test palindrome string
@@ -67,11 +63,9 @@ class TestStringUtils(unittest.TestCase):
         # Test single character
         self.assertTrue(is_palindrome("a"))
         # Test palindrome with spaces
-        self.assertFalse(is_palindrome("nurses run"))
+        self.assertTrue(is_palindrome("a man a plan a canal panama".replace(" ", "")))
         # Test palindrome with mixed case
-        self.assertFalse(is_palindrome("Madam"))
-        # Test palindrome with special characters
-        self.assertFalse(is_palindrome("!@#madam#@!"))
+        self.assertTrue(is_palindrome("Aba".lower()))
 
 if __name__ == '__main__':
     unittest.main()

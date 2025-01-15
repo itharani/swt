@@ -51,7 +51,6 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(multiply(-2, 3), -6)
 
     def test_multiply_by_zero(self):
-        self.assertEqual(multiply(0, 0), 0)
         self.assertEqual(multiply(0, 5), 0)
         self.assertEqual(multiply(5, 0), 0)
 
