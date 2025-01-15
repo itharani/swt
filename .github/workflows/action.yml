@@ -13,6 +13,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event.commits || github.event.head_commit }}  # Check if there are commits triggering the workflow
     steps:
 
       - name: Checkout repo content
