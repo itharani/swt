@@ -1,7 +1,7 @@
 openai
 python-dotenv
 instructor
-aiohttp==3.8.4
+aiohttp
 aiosignal==1.3.1
 async-timeout==4.0.2
 attrs==23.1.0
@@ -9,11 +9,10 @@ certifi==2022.12.7
 charset-normalizer==3.1.0
 exceptiongroup==1.1.1
 fire==0.5.0
-frozenlist==1.3.3
+frozenlist
 idna==3.4
 iniconfig==2.0.0
-multidict==6.0.4
-openai==0.27.4
+multidict
 packaging==23.1
 pluggy==1.0.0
 pytest==7.3.1
