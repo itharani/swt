@@ -51,6 +51,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(multiply(-2, 3), -6)
 
     def test_multiply_by_zero(self):
+        self.assertEqual(multiply(0, 0), 0)
         self.assertEqual(multiply(0, 5), 0)
         self.assertEqual(multiply(5, 0), 0)
 
@@ -77,6 +78,7 @@ class TestCalculator(unittest.TestCase):
 
     def test_divide_zero_by_number(self):
         self.assertEqual(divide(0, 5), 0)
+        self.assertEqual(divide(0, -5), 0)
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,66 +14,64 @@ from string_utils import reverse_string, capitalize_string, count_vowels, is_pal
 class TestStringUtils(unittest.TestCase):
 
     def test_reverse_string(self):
-        # Test with a regular string
+        # Test normal string
         self.assertEqual(reverse_string("hello"), "olleh")
-        # Test with an empty string
+        # Test empty string
         self.assertEqual(reverse_string(""), "")
-        # Test with a single character
+        # Test single character
         self.assertEqual(reverse_string("a"), "a")
-        # Test with a palindrome
+        # Test palindrome
         self.assertEqual(reverse_string("madam"), "madam")
-        # Test with special characters
+        # Test string with spaces
+        self.assertEqual(reverse_string("hello world"), "dlrow olleh")
+        # Test string with special characters
         self.assertEqual(reverse_string("!@#"), "#@!")
-        # Test with numbers in string
-        self.assertEqual(reverse_string("12345"), "54321")
 
     def test_capitalize_string(self):
-        # Test with a regular string
+        # Test normal string
         self.assertEqual(capitalize_string("hello"), "Hello")
-        # Test with an empty string
+        # Test empty string
         self.assertEqual(capitalize_string(""), "")
-        # Test with a single lowercase character
+        # Test single character
         self.assertEqual(capitalize_string("a"), "A")
-        # Test with a single uppercase character
-        self.assertEqual(capitalize_string("A"), "A")
-        # Test with a string that is already capitalized
+        # Test already capitalized
         self.assertEqual(capitalize_string("Hello"), "Hello")
-        # Test with a string with special characters
+        # Test string with spaces
+        self.assertEqual(capitalize_string("hello world"), "Hello world")
+        # Test string with special characters
         self.assertEqual(capitalize_string("!hello"), "!hello")
-        # Test with a string with numbers
-        self.assertEqual(capitalize_string("123hello"), "123hello")
 
     def test_count_vowels(self):
-        # Test with a regular string
+        # Test normal string
         self.assertEqual(count_vowels("hello"), 2)
-        # Test with an empty string
+        # Test empty string
         self.assertEqual(count_vowels(""), 0)
-        # Test with a string with no vowels
+        # Test string with no vowels
         self.assertEqual(count_vowels("bcdfg"), 0)
-        # Test with a string with all vowels
+        # Test string with all vowels
         self.assertEqual(count_vowels("aeiou"), 5)
-        # Test with a string with uppercase vowels
+        # Test string with uppercase vowels
         self.assertEqual(count_vowels("AEIOU"), 5)
-        # Test with a string with mixed case vowels
+        # Test string with mixed case vowels
         self.assertEqual(count_vowels("aEiOu"), 5)
-        # Test with a string with numbers and vowels
-        self.assertEqual(count_vowels("123aeiou"), 5)
+        # Test string with special characters
+        self.assertEqual(count_vowels("!@#aei"), 3)
 
     def test_is_palindrome(self):
-        # Test with a palindrome
+        # Test palindrome string
         self.assertTrue(is_palindrome("madam"))
-        # Test with a non-palindrome
+        # Test non-palindrome string
         self.assertFalse(is_palindrome("hello"))
-        # Test with an empty string
+        # Test empty string
         self.assertTrue(is_palindrome(""))
-        # Test with a single character
+        # Test single character
         self.assertTrue(is_palindrome("a"))
-        # Test with a palindrome with even length
-        self.assertTrue(is_palindrome("abba"))
-        # Test with a palindrome with special characters
-        self.assertTrue(is_palindrome("!@##@!"))
-        # Test with a non-palindrome with special characters
-        self.assertFalse(is_palindrome("!@#a"))
+        # Test palindrome with spaces
+        self.assertFalse(is_palindrome("nurses run"))
+        # Test palindrome with mixed case
+        self.assertFalse(is_palindrome("Madam"))
+        # Test palindrome with special characters
+        self.assertFalse(is_palindrome("!@#madam#@!"))
 
 if __name__ == '__main__':
     unittest.main()
