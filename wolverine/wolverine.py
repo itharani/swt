@@ -50,6 +50,8 @@ def get_imported_files(test_file: str) -> List[str]:
                     imported_files.append(alias.name)
             elif isinstance(node, ast.ImportFrom):
                 imported_files.append(node.module)
+    
+    print(f"Imported files: {imported_files}")
     return imported_files
 
 
@@ -129,31 +131,47 @@ def json_validated_response(
 
 
 def send_error_to_gpt(
-    test_file: str, imported_files: List[str], args: List, error_message: str, model: str = DEFAULT_MODEL
+    test_file: str,
+    imported_files: List[str],
+    args: List,
+    error_message: str,
+    failed_test_case: str,  # New parameter to pass the failed test case
+    model: str = DEFAULT_MODEL,
 ) -> Dict:
     """
-    Send the error, test file, and the related imported files to the LLM for suggestions.
+    Send the error, the failed test case, and related imported files to the LLM for suggestions.
     """
-    # Read the content of the test file
+    # Extract the failed test case content
     with open(test_file, "r") as f:
         test_file_lines = f.readlines()
 
-    test_file_with_lines = []
-    for i, line in enumerate(test_file_lines):
-        test_file_with_lines.append(str(i + 1) + ": " + line)
-    test_file_with_lines = "".join(test_file_with_lines)
+    # Search for the failed test case in the script
+    test_case_content = []
+    inside_failed_test = False
+    for line in test_file_lines:
+        if failed_test_case in line:  # Start of the failed test case
+            inside_failed_test = True
+        if inside_failed_test:
+            test_case_content.append(line)
+            if line.strip() == "":  # Assume a blank line marks the end of the test case
+                break
 
-    # Read the content of imported files and include their paths
+    test_case_with_lines = []
+    for i, line in enumerate(test_case_content):
+        test_case_with_lines.append(str(i + 1) + ": " + line)
+    test_case_with_lines = "".join(test_case_with_lines)
+
+    # Include imported file content as before
     imported_file_contents = {}
     for file in imported_files:
-        file_path = os.path.join('testfiles', file + '.py')  # Adjust if necessary
+        file_path = os.path.join("testfiles", file + ".py")
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 imported_file_contents[file_path] = f.readlines()
 
     prompt = (
-        "Here is the test script that failed:\n\n"
-        f"{test_file_with_lines}\n\n"
+        "Here is the failed test case:\n\n"
+        f"{test_case_with_lines}\n\n"
         "Here are the arguments it was provided:\n\n"
         f"{args}\n\n"
         "Here is the error message:\n\n"
@@ -161,13 +179,13 @@ def send_error_to_gpt(
         "Here is the code from the imported files:\n\n"
     )
 
-    # Add imported files content to the prompt with file paths
+    # Add imported files content to the prompt
     for file_path, file_content in imported_file_contents.items():
         prompt += f"Code from {file_path}:\n"
         for i, line in enumerate(file_content):
-            prompt += f"{i+1}: {line}"
+            prompt += f"{i + 1}: {line}"
 
-    # Send to GPT
+    # Send the prompt to GPT
     messages = [
         {
             "role": "system",
@@ -182,11 +200,13 @@ def send_error_to_gpt(
     return json_validated_response(model, messages)
 
 
+
 def apply_changes(file_path: dict, changes: List, confirm: bool = False):
     """
     Pass changes as loaded json (list of dicts)
     """
     # Extract the actual file path from the response (if it's in dictionary format)
+    print(file_path)
     file_path = file_path.get('file', '')
 
     if not file_path:
@@ -279,7 +299,8 @@ def main(test_file, *test_args, revert=False, model=DEFAULT_MODEL, confirm=False
                 args=test_args,
                 error_message=output,
                 model=model,
+                failed_test_case=output
             )
-
+            #print(json_response)
             apply_changes(json_response[-1], json_response, confirm=confirm)
             cprint("Changes applied. Rerunning...", "blue")
