@@ -15,4 +15,5 @@ def count_vowels(s):
 
 def is_palindrome(s):
     """Returns True if the input string is a palindrome, False otherwise."""
-    return s == s[::-1]
+    cleaned_s = ''.join(char.lower() for char in s if char.isalnum())
+    return cleaned_s == cleaned_s[::-1]
