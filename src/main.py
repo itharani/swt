@@ -81,7 +81,7 @@ def save_test(file_name, test_script, test_type="unit"):
     test_dir = f"tests/{test_type}"
     os.makedirs(test_dir, exist_ok=True)
     
-    test_file_name = f"{test_dir}/test_{file_name.replace('.py', '').replace('.js', '')}.py"
+    test_file_name = f"{test_dir}/{file_name.replace('.py', '').replace('.js', '')})_test.py"
     with open(test_file_name, "w") as f:
         f.write(test_script)
     print(f"Test script saved as {test_file_name}")
@@ -101,7 +101,15 @@ def generate_and_run_tests():
     
     for file in files:
         content = file['content']
+        original_filename = file['name']
         
+        test_file_name = f"tests/unit/test_{original_filename.replace('.py', '').replace('.js', '')}.py"
+
+        # Check if the test file already exists, skip if exists
+        if os.path.exists(test_file_name):
+            print(f"Skipping {original_filename}: Test file already exists.")
+            continue  
+
         # Generate and save only unit tests
         unit_test_script = generate_test(content, test_type="unit")
         save_test(file['name'], unit_test_script, test_type="unit")
