@@ -81,7 +81,7 @@ def save_test(file_name, test_script, test_type="unit"):
     test_dir = f"tests/{test_type}"
     os.makedirs(test_dir, exist_ok=True)
     
-    test_file_name = f"{test_dir}/{file_name.replace('.py', '').replace('.js', '')})_test.py"
+    test_file_name = f"{test_dir}/{file_name.replace('.py', '').replace('.js', '')}_test.py"
     with open(test_file_name, "w") as f:
         f.write(test_script)
     print(f"Test script saved as {test_file_name}")
