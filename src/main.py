@@ -103,7 +103,7 @@ def generate_and_run_tests():
         content = file['content']
         original_filename = file['name']
         
-        test_file_name = f"tests/unit/test_{original_filename.replace('.py', '').replace('.js', '')}.py"
+        test_file_name = f"tests/unit/{original_filename.replace('.py', '').replace('.js', '')}_test.py"
 
         # Check if the test file already exists, skip if exists
         if os.path.exists(test_file_name):
