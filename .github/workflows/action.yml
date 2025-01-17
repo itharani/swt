@@ -16,6 +16,8 @@ jobs:
 
       - name: Checkout repo content
         uses: actions/checkout@v2  # Checkout the repository content to GitHub runner
+        with: 
+          fetch-depth: 2 #Make sure enough history fetched
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -48,12 +50,16 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-          FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
-          if [ -n "$FILES" ]; then
-            COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-            echo "message=$COMMIT_MESSAGE" >> $GITHUB_ENV
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
+            if [ -n "$FILES" ]; then
+              COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
+              echo "message=$COMMIT_MESSAGE" >> $GITHUB_ENV
+            else
+              echo "message=No relevant changes detected" >> $GITHUB_ENV
+            fi
           else
-            echo "message=No relevant changes detected" >> $GITHUB_ENV
+            echo "message=No previous commit available for diff" >> $GITHUB_ENV
           fi
 
       - name: Commit files
