@@ -11,7 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.commits || github.event.head_commit }}  # Check if there are commits triggering the workflow
+    if: ${{ github.event.commits || github.event.head_commit }}  
+    # Check if there are commits triggering the workflow
     steps:
 
       - name: Checkout repo content
@@ -54,12 +55,12 @@ jobs:
             FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
             if [ -n "$FILES" ]; then
               COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-              echo "::set-output name=message::$COMMIT_MESSAGE"
+              echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV            
             else
-              echo "::set-output name=message::No relevant changes detected"
+              echo "COMMIT_MESSAGE=No relevant changes detected" >> $GITHUB_ENV
             fi
           else
-            echo "::set-output name=message::No previous commit available for diff"
+            echo "COMMIT_MESSAGE=No previous commit available for diff" >> $GITHUB_ENV
           fi
           
       - name: Commit files
@@ -67,8 +68,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || git commit -m "${{ steps.commit_message.outputs.message }}" --allow-empty
-
+          git diff-index --quiet HEAD || git commit -m "${{ env.COMMIT_MESSAGE }}" --allow-empty
+          
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
