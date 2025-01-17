@@ -51,7 +51,7 @@ class TestStringUtils(unittest.TestCase):
         # Test with a string with all vowels
         self.assertEqual(count_vowels("aeiouAEIOU"), 10)
         # Test with a string with mixed characters
-        self.assertEqual(count_vowels("h3ll0 w0rld!"), 1)
+        self.assertEqual(count_vowels('h3ll0 w0rld!'), 0)
 
     def test_is_palindrome(self):
         # Test with a palindrome
