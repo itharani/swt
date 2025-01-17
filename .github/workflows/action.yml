@@ -54,20 +54,20 @@ jobs:
             FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
             if [ -n "$FILES" ]; then
               COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-              echo "message=$COMMIT_MESSAGE" >> $GITHUB_ENV
+              echo "::set-output name=message::$COMMIT_MESSAGE"
             else
-              echo "message=No relevant changes detected" >> $GITHUB_ENV
+              echo "::set-output name=message::No relevant changes detected"
             fi
           else
-            echo "message=No previous commit available for diff" >> $GITHUB_ENV
+            echo "::set-output name=message::No previous commit available for diff"
           fi
-
+          
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+          git diff-index --quiet HEAD || git commit -m "${{ steps.commit_message.outputs.message }}" --allow-empty
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
