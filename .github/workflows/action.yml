@@ -51,24 +51,20 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-            FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
-            if [ -n "$FILES" ]; then
-              COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-              echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV            
-            else
-              echo "COMMIT_MESSAGE=No relevant changes detected" >> $GITHUB_ENV
-            fi
+          FILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
+          if [ -n "$FILES" ]; then
+            COMMIT_MESSAGE=$(echo "$FILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
           else
-            echo "COMMIT_MESSAGE=No previous commit available for diff" >> $GITHUB_ENV
+            COMMIT_MESSAGE="No relevant changes detected"
           fi
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
           
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff-index --quiet HEAD || git commit -m "${{ env.COMMIT_MESSAGE }}" --allow-empty
+          git commit -m "${{ env.COMMIT_MESSAGE }}"
           
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
