@@ -55,8 +55,8 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-            TESTFILES=$(git diff --name-only HEAD~1 | grep '^testfiles/')
-            REWRITEFILES=$(git diff --name-only HEAD~1 | grep '^rewrite/')
+            TESTFILES=$(git diff --name-only HEAD~1 || true | grep '^testfiles/')
+            REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/')
             
             if [ -n "$TESTFILES" ]; then
               TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
