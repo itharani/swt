@@ -55,29 +55,29 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-            TESTFILES=$(git diff --name-only HEAD~1 || true | grep '^testfiles/')
-            REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/')
-            
-            if [ -n "$TESTFILES" ]; then
-              TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-            else
-              TESTFILES_MESSAGE=""
-            fi
-        
-            if [ -n "$REWRITEFILES" ]; then
-              REWRITEFILES_MESSAGE=$(echo "$REWRITEFILES" | sed -E 's|rewrite/(.*).py|• Rewrote \U\1\'s file|g' | tr '\n' '\n')
-            else
-              REWRITEFILES_MESSAGE=""
-            fi
-        
-            if [ -n "$TESTFILES_MESSAGE" ] || [ -n "$REWRITEFILES_MESSAGE" ]; then
-              COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
-            else
-              COMMIT_MESSAGE="No relevant changes detected"
-            fi
-        
-            echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
-                  
+              TESTFILES=$(git diff --name-only HEAD~1 || true | grep '^testfiles/' || true)
+              REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/' || true)
+              
+              if [ -n "$TESTFILES" ]; then
+                TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
+              else
+                TESTFILES_MESSAGE=""
+              fi
+          
+              if [ -n "$REWRITEFILES" ]; then
+                REWRITEFILES_MESSAGE=$(echo "$REWRITEFILES" | sed -E 's|rewrite/(.*).py|• Rewrote \U\1\'"'"'s file|g' | tr '\n' '\n')
+              else
+                REWRITEFILES_MESSAGE=""
+              fi
+          
+              if [ -n "$TESTFILES_MESSAGE" ] || [ -n "$REWRITEFILES_MESSAGE" ]; then
+                COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
+              else
+                COMMIT_MESSAGE="No relevant changes detected"
+              fi
+          
+              echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+                          
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
