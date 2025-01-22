@@ -50,7 +50,10 @@ jobs:
         if: contains(join(github.event.commits.*.modified, ','), 'rewrite/')
         run: |
           echo "Processing rewrite folder..."
-          python rewrite.py          
+          python rewrite.py        
+          git add rewrite/*
+          git status
+          git commit -m "Refactor code using AI" || echo "No changes to commit"  
         
       - name: Generate descriptive commit message
         id: commit_message
