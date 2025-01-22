@@ -50,7 +50,7 @@ jobs:
         if: contains(join(github.event.commits.*.modified, ','), 'rewrite/')
         run: |
           echo "Processing rewrite folder..."
-          python src/rewrite.py          
+          python rewrite.py          
         
       - name: Generate descriptive commit message
         id: commit_message
