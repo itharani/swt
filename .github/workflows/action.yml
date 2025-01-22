@@ -43,8 +43,8 @@ jobs:
       - name: Process `testfiles` folder
         if: contains(join(github.event.commits.*.modified, ','), 'testfiles/')
         run: |
-            echo "Processing testfiles folder..."
-            python src/main.py
+          echo "Processing testfiles folder..."
+          python src/main.py
 
       - name: Process `rewrite` folder
         if: contains(join(github.event.commits.*.modified, ','), 'rewrite/')
@@ -55,27 +55,28 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-              TESTFILES=$(git diff --name-only HEAD~1 || true | grep '^testfiles/' || true)
-              REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/' || true)
+            TESTFILES=$(git diff --name-only HEAD~1 ||true | grep '^testfiles/' || true)
+            REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/' || true)
               
-              if [ -n "$TESTFILES" ]; then
-                TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-              else
-                TESTFILES_MESSAGE=""
-              fi
+            if [ -n "$TESTFILES" ]; then
+              TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
+            else
+              TESTFILES_MESSAGE=""
+            fi
           
-              if [ -n "$REWRITEFILES" ]; then
-                REWRITEFILES_MESSAGE=$(echo "$REWRITEFILES" | sed -E 's|rewrite/(.*).py|• Rewrote \U\1\'"'"'s file|g' | tr '\n' '\n')
-              else
-                REWRITEFILES_MESSAGE=""
-              fi
+            if [ -n "$REWRITEFILES" ]; then
+              REWRITEFILES_MESSAGE=$(echo "$REWRITEFILES" | sed -E 's|rewrite/(.*).py|• Rewrote \U\1\'"'"'s file|g' | tr '\n' '\n')
+            else
+              REWRITEFILES_MESSAGE=""
+            fi
           
-              if [ -n "$TESTFILES_MESSAGE" ] || [ -n "$REWRITEFILES_MESSAGE" ]; then
-                COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
-              else
-                COMMIT_MESSAGE="No relevant changes detected"
-              fi
-          
+            if [ -n "$TESTFILES_MESSAGE" ] || [ -n "$REWRITEFILES_MESSAGE" ]; then
+              COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
+              echo "Changes detected, preparing commit"
+            else
+              COMMIT_MESSAGE="No relevant changes detected"
+              echo "NO changes detected, skipping commit"
+            fi
               echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
                           
       - name: Commit files

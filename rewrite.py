@@ -26,16 +26,18 @@ def rewrite_code_with_ai(file_path):
     5. Remove unnecessary comments and redundant code.
     6. Optimize imports by removing unused ones.
     7. Keep the code modular and reusable.
+    8. Do not use backticks or any other syntax to enclose expressions in the code.
+    9. The output should be pure Python code without any markdown or code block formatting.
+
     
-    ```
+    
     {original_code}
-    ```
+    
     """
 
     # Use Azure OpenAI to refactor the code
     response = client.chat.completions.create(
         model=os.getenv("MODEL_NAME"),
-        response_model=None,
         messages=[{"role": "system", "content": prompt}],
         temperature=0.1
     )
