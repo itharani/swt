@@ -71,5 +71,6 @@ class TestStringUtils(unittest.TestCase):
         # Test palindrome with mixed case
         self.assertTrue(is_palindrome("RaceCar"))
 
+
 if __name__ == '__main__':
     unittest.main()
