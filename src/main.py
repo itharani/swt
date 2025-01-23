@@ -140,6 +140,9 @@ def run_tests():
             if fixed["solved"] == True:
                 print(f"Fix applied successfully for {test_file}")
                 commit_message = generate_commit_message(fixed["fix"])
+                 # Ensure Git identity is set
+                subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"], check=True)
+                subprocess.run(["git", "config", "--global", "user.email", "actions@github.com"], check=True)
                 # Run the git commit command
                 subprocess.run(["git", "add", "."], check=True)
                 subprocess.run(["git", "commit", "-m", commit_message], check=True)
