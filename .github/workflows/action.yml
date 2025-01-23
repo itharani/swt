@@ -4,6 +4,7 @@ on:
   push:
       paths:
       - 'testfiles/**'  # Only trigger for changes in the 'testfiles' folder
+      - 'tests/**'  # Only trigger for changes in the 'tests' folder
   pull_request:
     branches:
       - e2e  # Trigger the workflow on pull request events targeting 'main' branch
