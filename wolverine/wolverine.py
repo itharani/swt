@@ -320,7 +320,7 @@ def main(test_file, *test_args, revert=False, model=DEFAULT_MODEL, confirm=False
             if returncode == 0:
                 cprint("Fix worked! Test passed.", "green")
                 fix_response['solved'] = True  # Mark the fix as solved
-                return fix_response  # Exit the loop since the issue is resolved
+                # return fix_response  # Exit the loop since the issue is resolved
             else:
                 cprint("Fix didn't solve the issue. Trying the next fix...", "yellow")
                 fix_response['solved'] = False  # Mark the fix as not solved

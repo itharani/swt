@@ -45,12 +45,12 @@ jobs:
           MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}  # Use secret for deployment
         run: python src/main.py  # Execute the script with environment variables available
 
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
+      # - name: Commit files
+      #   run: |
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "GitHub Action"
+      #     git add -A
+      #     git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
