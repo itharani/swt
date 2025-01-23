@@ -141,6 +141,7 @@ def run_tests():
                 print(f"Fix applied successfully for {test_file}")
                 commit_message = generate_commit_message(fixed["fix"])
                 # Run the git commit command
+                subprocess.run(["git", "add", test_file], check=True)
                 subprocess.run(["git", "commit", "-am", commit_message], check=True)
                 # git commit message for the fixed["fix"] fix for file fixed["file"]
             else:
