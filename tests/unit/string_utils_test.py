@@ -53,7 +53,7 @@ class TestStringUtils(unittest.TestCase):
         # Test string with mixed case vowels
         self.assertEqual(count_vowels("AEIOUaeiou"), 10)
         # Test string with special characters
-        self.assertEqual(count_vowels("h@ll0"), 10)
+        self.assertEqual(count_vowels('h@ll0'), 0)
 
     def test_is_palindrome(self):
         # Test palindrome string
