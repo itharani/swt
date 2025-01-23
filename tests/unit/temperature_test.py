@@ -39,7 +39,7 @@ class TestTemperatureConversions(unittest.TestCase):
         self.assertAlmostEqual(fahrenheit_to_celsius(99.5), 37.5)
 
         # Test large positive Fahrenheit
-        self.assertAlmostEqual(fahrenheit_to_celsius(1832), 900)
+        self.assertAlmostEqual(fahrenheit_to_celsius(1832), 1000)
 
         # Test large negative Fahrenheit
         self.assertAlmostEqual(fahrenheit_to_celsius(-459.67), -273.15)  # Absolute zero

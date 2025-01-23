@@ -5,6 +5,7 @@ import unittest
 # Walk through all directories starting from the project root and add them to sys.path
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))  # Adjust path to project root
 
+
 # Walk through all directories under root_path and add them to sys.path
 for dirpath, dirnames, filenames in os.walk(root_path):
     sys.path.append(dirpath)
@@ -38,7 +39,7 @@ class TestTemperatureConversions(unittest.TestCase):
         self.assertAlmostEqual(fahrenheit_to_celsius(99.5), 37.5)
 
         # Test large positive Fahrenheit
-        self.assertAlmostEqual(fahrenheit_to_celsius(1832), 1000)
+        self.assertAlmostEqual(fahrenheit_to_celsius(1832), 900)
 
         # Test large negative Fahrenheit
         self.assertAlmostEqual(fahrenheit_to_celsius(-459.67), -273.15)  # Absolute zero
