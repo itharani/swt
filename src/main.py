@@ -98,6 +98,32 @@ def save_test(file_name, test_script, test_type="unit"):
         f.write(test_script)
     print(f"Test script saved as {test_file_name}")
 
+def generate_commit_message(changes):
+    """
+    Sends the changes to the Azure OpenAI client and generates a short commit message.
+    """
+    prompt = (
+        f"The following is a code change: {changes}\n"
+        "Generate a short and meaningful git commit message summarizing this change:"
+    )
+    
+    try:
+        # Call Azure OpenAI's GPT model
+        response = client.chat.completions.create(
+            model=os.getenv("MODEL_NAME"),
+            response_model=None,
+             messages=[{"role": "system", "content": "You are a helpful assistant for writing commit messages."},
+                      {"role": "user", "content": prompt}],
+            temperature=0.1
+        )
+        # Extract the generated commit message
+        commit_message = response.choices[0].message.content.strip()
+        return commit_message
+    
+    except Exception as e:
+        print(f"Error generating commit message: {e}")
+        return None
+    
 # Run unit tests with Wolverine
 def run_tests():
     test_dir = "tests/unit"
@@ -113,7 +139,7 @@ def run_tests():
             # Check if the fix solved the issue
             if fixed["solved"] == True:
                 print(f"Fix applied successfully for {test_file}")
-                commit_message = f"Fix: Applied fix for {fixed['file']} based on changes."
+                commit_message = generate_commit_message(fixed["fix"])
                 # Run the git commit command
                 subprocess.run(["git", "commit", "-am", commit_message], check=True)
                 # git commit message for the fixed["fix"] fix for file fixed["file"]
