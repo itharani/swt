@@ -41,12 +41,22 @@ jobs:
           MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}
           
       - name: Process `testfiles` folder
+        env:
+          API_KEY: ${{ secrets.API_KEY }}  # Use GitHub secret for API Key
+          LLM_API_VERSION: ${{ secrets.LLM_API_VERSION }}  # Use secret for API version
+          BASE_URL: ${{ secrets.BASE_URL }}  # Use secret for the Azure endpoint
+          MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}  # Use secret for deployment
         if: contains(join(github.event.head_commit.modified, ','), 'testfiles/')
         run: |
           echo "Processing testfiles folder..."
           python src/main.py
 
       - name: Process `rewrite` folder
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          LLM_API_VERSION: ${{ secrets.LLM_API_VERSION }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}
         run: |
           if git diff --name-only HEAD~1 | grep -q '^rewrite/'; then
             echo "Processing rewrite folder..."
@@ -57,7 +67,7 @@ jobs:
           else
             echo "No changes in rewrite folder. Skipping."
           fi        
-          
+
       - name: Generate descriptive commit message
         id: commit_message
         run: |
