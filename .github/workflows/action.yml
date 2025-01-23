@@ -47,14 +47,17 @@ jobs:
           python src/main.py
 
       - name: Process `rewrite` folder
-        if: contains(join(github.event.head_commit.modified, ','), 'rewrite/')
         run: |
-          echo "Processing rewrite folder..."
-          python rewrite.py        
-          git add rewrite/*
-          git status
-          git commit -m "Refactor code using AI" || echo "No changes to commit"  
-        
+          if git diff --name-only HEAD~1 | grep -q '^rewrite/'; then
+            echo "Processing rewrite folder..."
+            python rewrite.py        
+            git add rewrite/*
+            git status
+            git commit -m "Refactor code using AI" || echo "No changes to commit"
+          else
+            echo "No changes in rewrite folder. Skipping."
+          fi        
+          
       - name: Generate descriptive commit message
         id: commit_message
         run: |
