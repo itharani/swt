@@ -93,6 +93,11 @@ def json_validated_response(
         )
         messages.append(response.choices[0].message)
         content = response.choices[0].message.content
+        
+        # Check if the content starts and ends with code block markers
+        if content.startswith("```json") and content.endswith("```"):
+            content = content[7:-3].strip()  # Remove the ```json and ``` markers
+
         # see if json can be parsed
         try:
             json_start_index = content.index(
@@ -121,6 +126,7 @@ def json_validated_response(
             nb_retry -= 1
             # rerun the api call
             return json_validated_response(model, messages, nb_retry)
+    
         except Exception as e:
             cprint(f"Unknown error: {e}", "red")
             cprint(f"\nGPT RESPONSE:\n\n{content}\n\n", "yellow")
