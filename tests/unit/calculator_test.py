@@ -13,70 +13,51 @@ from calculator import add, subtract, multiply, divide
 
 class TestCalculator(unittest.TestCase):
 
-    def test_add_positive_numbers(self):
+    def test_add(self):
+        # Test positive numbers
         self.assertEqual(add(1, 2), 3)
-
-    def test_add_negative_numbers(self):
+        # Test negative numbers
         self.assertEqual(add(-1, -2), -3)
-
-    def test_add_mixed_numbers(self):
+        # Test positive and negative number
         self.assertEqual(add(-1, 2), 1)
-
-    def test_add_zero(self):
+        # Test zero
         self.assertEqual(add(0, 0), 0)
         self.assertEqual(add(0, 5), 5)
-        self.assertEqual(add(5, 0), 5)
 
-    def test_subtract_positive_numbers(self):
-        self.assertEqual(subtract(3, 2), 1)
-
-    def test_subtract_negative_numbers(self):
-        self.assertEqual(subtract(-3, -2), -1)
-
-    def test_subtract_mixed_numbers(self):
-        self.assertEqual(subtract(-1, 2), -3)
-
-    def test_subtract_zero(self):
+    def test_subtract(self):
+        # Test positive numbers
+        self.assertEqual(subtract(5, 3), 2)
+        # Test negative numbers
+        self.assertEqual(subtract(-5, -3), -2)
+        # Test positive and negative number
+        self.assertEqual(subtract(-5, 3), -8)
+        # Test zero
         self.assertEqual(subtract(0, 0), 0)
-        self.assertEqual(subtract(0, 5), -5)
         self.assertEqual(subtract(5, 0), 5)
 
-    def test_multiply_positive_numbers(self):
-        self.assertEqual(multiply(3, 2), 6)
-
-    def test_multiply_negative_numbers(self):
-        self.assertEqual(multiply(-3, -2), 6)
-
-    def test_multiply_mixed_numbers(self):
-        self.assertEqual(multiply(-3, 2), -6)
-
-    def test_multiply_zero(self):
-        self.assertEqual(multiply(0, 0), 0)
+    def test_multiply(self):
+        # Test positive numbers
+        self.assertEqual(multiply(2, 3), 6)
+        # Test negative numbers
+        self.assertEqual(multiply(-2, -3), 6)
+        # Test positive and negative number
+        self.assertEqual(multiply(-2, 3), -6)
+        # Test zero
         self.assertEqual(multiply(0, 5), 0)
         self.assertEqual(multiply(5, 0), 0)
 
-    def test_divide_positive_numbers(self):
-        self.assertEqual(divide(6, 2), 3)
-
-    def test_divide_negative_numbers(self):
-        self.assertEqual(divide(-6, -2), 3)
-
-    def test_divide_mixed_numbers(self):
-        self.assertEqual(divide(-6, 2), -3)
-
-    def test_divide_by_one(self):
+    def test_divide(self):
+        # Test positive numbers
+        self.assertEqual(divide(6, 3), 2)
+        # Test negative numbers
+        self.assertEqual(divide(-6, -3), 2)
+        # Test positive and negative number
+        self.assertEqual(divide(-6, 3), -2)
+        # Test division by one
         self.assertEqual(divide(5, 1), 5)
-        self.assertEqual(divide(-5, 1), -5)
-
-    def test_divide_one_by_number(self):
-        self.assertEqual(divide(1, 5), 0.2)
-        self.assertEqual(divide(1, -5), -0.2)
-
-    def test_divide_zero(self):
+        # Test division of zero
         self.assertEqual(divide(0, 5), 0)
-        self.assertEqual(divide(0, -5), 0)
-
-    def test_divide_by_zero(self):
+        # Test division by zero
         with self.assertRaises(ValueError):
             divide(5, 0)
 

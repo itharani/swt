@@ -1,3 +1,4 @@
+import json
 import openai
 from pydantic import BaseModel
 from openai import AzureOpenAI
@@ -5,6 +6,17 @@ from dotenv import load_dotenv
 import os
 import instructor
 import subprocess
+import sys
+
+
+    # Walk through all directories starting from the project root and add them to sys.path
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))  # Adjust path to project root
+
+# Walk through all directories under root_path and add them to sys.path
+for dirpath, dirnames, filenames in os.walk(root_path):
+    sys.path.append(dirpath)
+
+from wolverine import main
 
 load_dotenv()
 
@@ -93,8 +105,21 @@ def run_tests():
 
     for test_file in test_files:
         print(f"Running test: {test_file}")
-        subprocess.run(["python", "-m", "wolverine", test_file], check=True)
+        fixed = main(test_file)
 
+        print(fixed, "fixed")
+
+        if fixed != None:
+            # Check if the fix solved the issue
+            if fixed["solved"] == True:
+                print(f"Fix applied successfully for {test_file}")
+                commit_message = f"Fix: Applied fix for {fixed['file']} based on changes."
+                # Run the git commit command
+                subprocess.run(["git", "commit", "-am", commit_message], check=True)
+                # git commit message for the fixed["fix"] fix for file fixed["file"]
+            else:
+                print(f"Fix did not solve the issue for {test_file}.")
+    
 # Generate unit tests for all files in the repo and run them
 def generate_and_run_tests():
     files = fetch_files()

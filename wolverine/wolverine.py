@@ -270,6 +270,9 @@ def apply_changes(file_path: dict, changes: List, confirm: bool = False):
         f.writelines(file_lines)
     print("Changes applied.")
 
+    # Return the fix applied
+    return {"fix": changes, "solved": False, "file": file_path}  # Initially assume it didn't solve the issue
+
 
 def main(test_file, *test_args, revert=False, model=DEFAULT_MODEL, confirm=False):
     if revert:
@@ -294,7 +297,7 @@ def main(test_file, *test_args, revert=False, model=DEFAULT_MODEL, confirm=False
         if returncode == 0:
             cprint("Test ran successfully.", "blue")
             print("Output:", output)
-            break
+            return None
 
         else:
             cprint("Test failed. Trying to fix...", "blue")
@@ -308,5 +311,21 @@ def main(test_file, *test_args, revert=False, model=DEFAULT_MODEL, confirm=False
                 failed_test_case=output
             )
             #print(json_response)
-            apply_changes(json_response[-1], json_response, confirm=confirm)
+            fix_response = apply_changes(json_response[-1], json_response, confirm=confirm)
             cprint("Changes applied. Rerunning...", "blue")
+
+            output, returncode = run_script(test_file, test_args)
+
+            # Check if the test passed
+            if returncode == 0:
+                cprint("Fix worked! Test passed.", "green")
+                fix_response['solved'] = True  # Mark the fix as solved
+                return fix_response  # Exit the loop since the issue is resolved
+            else:
+                cprint("Fix didn't solve the issue. Trying the next fix...", "yellow")
+                fix_response['solved'] = False  # Mark the fix as not solved
+                print("Output after fix attempt:", output)
+            
+            return fix_response
+
+
