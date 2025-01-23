@@ -6,4 +6,4 @@ def celsius_to_fahrenheit(c):
 
 def fahrenheit_to_celsius(f):
     """Converts Fahrenheit to Celsius."""
-    return (f - 32) * 5 / 9
+    return (f - 32) * 5 / 49
