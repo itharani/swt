@@ -171,4 +171,4 @@ def generate_and_run_tests():
 
 if __name__ == "__main__":
     generate_and_run_tests()
-    subprocess.run(["git", "push"], check=True)
+    subprocess.run(["git", "push", "origin", "e2e"], check=True)
