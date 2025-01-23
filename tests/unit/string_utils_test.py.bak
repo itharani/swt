@@ -44,14 +44,16 @@ class TestStringUtils(unittest.TestCase):
     def test_count_vowels(self):
         # Test normal string
         self.assertEqual(count_vowels("hello"), 2)
-        # Test empty string
-        self.assertEqual(count_vowels(""), 0)
         # Test string with no vowels
         self.assertEqual(count_vowels("bcdfg"), 0)
+        # Test empty string
+        self.assertEqual(count_vowels(""), 0)
         # Test string with all vowels
         self.assertEqual(count_vowels("aeiouAEIOU"), 10)
-        # Test string with spaces and special characters
-        self.assertEqual(count_vowels('h@ll0 w0rld!'), 1)
+        # Test string with spaces
+        self.assertEqual(count_vowels("hello world"), 3)
+        # Test string with special characters
+        self.assertEqual(count_vowels("h@ll0"), 0)
 
     def test_is_palindrome(self):
         # Test palindrome
