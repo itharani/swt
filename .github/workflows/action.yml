@@ -41,13 +41,13 @@ jobs:
           MODEL_DEPLOYMENT: ${{ secrets.MODEL_DEPLOYMENT }}
           
       - name: Process `testfiles` folder
-        if: contains(join(github.event.commits.*.modified, ','), 'testfiles/')
+        if: contains(join(github.event.head_commit.modified, ','), 'testfiles/')
         run: |
           echo "Processing testfiles folder..."
           python src/main.py
 
       - name: Process `rewrite` folder
-        if: contains(join(github.event.commits.*.modified, ','), 'rewrite/')
+        if: contains(join(github.event.head_commit.modified, ','), 'rewrite/')
         run: |
           echo "Processing rewrite folder..."
           python rewrite.py        
