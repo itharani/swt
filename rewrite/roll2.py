@@ -1,21 +1,29 @@
 import random
 
-def roll(): return random.randint(1, 6) + random.randint(1, 6)
+def roll_dice():
+    return random.randint(1, 6) + random.randint(1, 6)
 
-def simulate(n):
-    d = {}
-    for i in range(2, 13): d[i] = 0
-    for _ in range(n): d[roll()] += 1
-    return d
+def simulate_rolls(num_rolls):
+    roll_counts = {i: 0 for i in range(2, 13)}
+    for _ in range(num_rolls):
+        roll_result = roll_dice()
+        roll_counts[roll_result] += 1
+    return roll_counts
 
-def calc(f, t): return {k: v / t for k, v in f.items()}
+def calculate_probabilities(frequencies, total_rolls):
+    return {sum_value: count / total_rolls for sum_value, count in frequencies.items()}
 
-def display(p):
+def display_probabilities(probabilities):
     print("Sum | Probability")
     print("-----------------")
-    for k, v in sorted(p.items()): print(f" {k}  | {v:.2%}")
+    for sum_value, probability in sorted(probabilities.items()):
+        print(f" {sum_value}  | {probability:.2%}")
+
+def main():
+    num_rolls = 10000
+    frequencies = simulate_rolls(num_rolls)
+    probabilities = calculate_probabilities(frequencies, num_rolls)
+    display_probabilities(probabilities)
 
 if __name__ == "__main__":
-    x = 10000
-    f = simulate(x)
-    display(calc(f, x))
+    main()
