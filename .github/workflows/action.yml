@@ -80,20 +80,23 @@ jobs:
             if [ -n "$TESTFILES" ]; then
               while IFS= read -r file; do
                 filename=$(basename "$file" .py)
-                TESTFILES_MESSAGE+="• Created test file for \U$filename\n"
+                TESTFILES_MESSAGE+="• Created test file for ${filename} "
               done <<< "$TESTFILES"
             fi
         
             if [ -n "$REWRITEFILES" ]; then
               while IFS= read -r file; do
                 filename=$(basename "$file" .py)
-                REWRITEFILES_MESSAGE+="• Rewrote \U$filename's file\n"
+                REWRITEFILES_MESSAGE+="• Rewrote ${filename}'s file "
               done <<< "$REWRITEFILES"
             fi
         
+            # Construct final commit message
             COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
         
-            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | tr '\n' ' ')" >> $GITHUB_ENV
+            # Ensure it's a single-line format
+            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | tr -s ' ')" >> $GITHUB_ENV
+        
                                           
       - name: Commit files
         run: |
