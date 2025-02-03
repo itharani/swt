@@ -93,8 +93,7 @@ jobs:
               COMMIT_MESSAGE="No relevant changes detected"
               echo "NO changes detected, skipping commit"
             fi
-              echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
-                          
+            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | tr '\n' ' ')" >> $GITHUB_ENV                          
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
