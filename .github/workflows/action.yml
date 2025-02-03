@@ -71,29 +71,30 @@ jobs:
       - name: Generate descriptive commit message
         id: commit_message
         run: |
-            TESTFILES=$(git diff --name-only HEAD~1 ||true | grep '^testfiles/' || true)
-            REWRITEFILES=$(git diff --name-only HEAD~1 || true | grep '^rewrite/' || true)
-              
+            TESTFILES=$(git diff --name-only HEAD~1 | grep '^testfiles/' || true)
+            REWRITEFILES=$(git diff --name-only HEAD~1 | grep '^rewrite/' || true)
+        
+            TESTFILES_MESSAGE=""
+            REWRITEFILES_MESSAGE=""
+        
             if [ -n "$TESTFILES" ]; then
-              TESTFILES_MESSAGE=$(echo "$TESTFILES" | sed -E 's|testfiles/(.*).py|• \U\1 Test File created|g' | tr '\n' '\n')
-            else
-              TESTFILES_MESSAGE=""
+              while IFS= read -r file; do
+                filename=$(basename "$file" .py)
+                TESTFILES_MESSAGE+="• Created test file for \U$filename\n"
+              done <<< "$TESTFILES"
             fi
-          
+        
             if [ -n "$REWRITEFILES" ]; then
-              REWRITEFILES_MESSAGE=$(echo "$REWRITEFILES" | sed -E 's|rewrite/(.*).py|• Rewrote \U\1\'"'"'s file|g' | tr '\n' '\n')
-            else
-              REWRITEFILES_MESSAGE=""
+              while IFS= read -r file; do
+                filename=$(basename "$file" .py)
+                REWRITEFILES_MESSAGE+="• Rewrote \U$filename's file\n"
+              done <<< "$REWRITEFILES"
             fi
-          
-            if [ -n "$TESTFILES_MESSAGE" ] || [ -n "$REWRITEFILES_MESSAGE" ]; then
-              COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
-              echo "Changes detected, preparing commit"
-            else
-              COMMIT_MESSAGE="No relevant changes detected"
-              echo "NO changes detected, skipping commit"
-            fi
-            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | tr '\n' ' ')" >> $GITHUB_ENV                          
+        
+            COMMIT_MESSAGE="${TESTFILES_MESSAGE}${REWRITEFILES_MESSAGE}"
+        
+            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | tr '\n' ' ')" >> $GITHUB_ENV
+                                          
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
