@@ -1,0 +1,30 @@
+name: Autonomous BDD Pipeline
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'requirements/**'
+
+jobs:
+  generate-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup AI Test Environment
+        run: |
+          pip install -r scripts/requirements.txt
+          python scripts/test_orchestrator.py --generate
+          
+      - name: Execute Business Validation
+        run: |
+          behave generated/features/
+          pact-verifier --provider src/implementation --contracts generated/contracts
+          
+      # - name: Self-heal Implementation
+      #   if: failure()
+      #   run: |
+      #     python scripts/test_orchestrator.py --fix
+      #     git commit -am "Auto-corrected business logic"
+      #     git push
