@@ -1,5 +1,3 @@
-# test file
-
 import subprocess
 import difflib
 import shutil
