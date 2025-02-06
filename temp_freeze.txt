@@ -59,7 +59,7 @@ tenacity==9.0.0
 termcolor==2.3.0
 toml==0.10.2
 tomli==2.0.1
-tqdm==4.65.0
+tqdm==4.66.3
 typer==0.15.1
 typing_extensions==4.12.2
 urllib3==1.26.15
