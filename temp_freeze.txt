@@ -7,7 +7,7 @@ async-timeout==4.0.2
 attrs==23.1.0
 boolean.py==4.0
 CacheControl==0.14.2
-certifi==2022.12.7
+certifi==2024.7.4
 charset-normalizer==3.1.0
 click==8.1.8
 cyclonedx-python-lib==7.6.2
