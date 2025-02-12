@@ -7,7 +7,7 @@ async-timeout==4.0.2
 attrs==23.1.0
 boolean.py==4.0
 CacheControl==0.14.2
-certifi==2022.12.7
+certifi==2024.7.4
 charset-normalizer==3.1.0
 click==8.1.8
 cyclonedx-python-lib==7.6.2
@@ -22,7 +22,7 @@ h11==0.14.0
 html5lib==1.1
 httpcore==1.0.7
 httpx==0.28.1
-idna==3.4
+idna==3.7
 iniconfig==2.0.0
 instructor==1.6.3
 Jinja2==3.1.5
@@ -48,7 +48,7 @@ pyparsing==3.2.1
 pytest==7.3.1
 pytest-mock==3.10.0
 python-dotenv==1.0.0
-requests==2.32.3
+requests==2.32.2
 rich==13.9.4
 ruff==0.0.263
 shellingham==1.5.4
@@ -59,9 +59,9 @@ tenacity==9.0.0
 termcolor==2.3.0
 toml==0.10.2
 tomli==2.0.1
-tqdm==4.65.0
+tqdm==4.66.3
 typer==0.15.1
 typing_extensions==4.12.2
-urllib3==1.26.15
+urllib3==1.26.19
 webencodings==0.5.1
 yarl==1.9.2
