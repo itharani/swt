@@ -1,58 +1,58 @@
-name: Autonomous BDD Pipeline
+# name: Autonomous BDD Pipeline
 
-on:
-  push:
-    paths:
-      - 'src/**'
-      - 'requirements/**'
+# on:
+#   push:
+#     paths:
+#       - 'src/**'
+#       - 'requirements/**'
 
-jobs:
-  generate-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false  # Disable automatic credentials to use a PAT
+# jobs:
+#   generate-and-test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+#         with:
+#           persist-credentials: false  # Disable automatic credentials to use a PAT
 
-      - name: Setup AI Test Environment
-        run: |
-          pip install -r requirements.txt
+#       - name: Setup AI Test Environment
+#         run: |
+#           pip install -r requirements.txt
 
-      - name: Generate Requirements Compliance Report
-        run: |
-          python scripts/generate_report/generate_report.py
+#       - name: Generate Requirements Compliance Report
+#         run: |
+#           python scripts/generate_report/generate_report.py
 
-      - name: Generate Test Scenarios
-        run: |
-          python scripts/generate_tests/test_orchestrator.py --generate
+#       - name: Generate Test Scenarios
+#         run: |
+#           python scripts/generate_tests/test_orchestrator.py --generate
 
-      - name: Execute Business Validation & Debugging
-        run: |
-          python debuggers/debugger_v2.py
+#       - name: Execute Business Validation & Debugging
+#         run: |
+#           python debuggers/debugger_v2.py
 
-      - name: Configure Git User
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#       - name: Configure Git User
+#         run: |
+#           git config --global user.name "github-actions[bot]"
+#           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create and Switch to a New Branch
-        run: |
-          BRANCH_NAME="auto-fix-$(date +%s)"
-          git checkout -b $BRANCH_NAME
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+#       - name: Create and Switch to a New Branch
+#         run: |
+#           BRANCH_NAME="auto-fix-$(date +%s)"
+#           git checkout -b $BRANCH_NAME
+#           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Commit and Push Changes
-        run: |
-          git add .
-          git commit -m "Auto-generated tests and fixes"
-          git push origin $BRANCH_NAME
+#       - name: Commit and Push Changes
+#         run: |
+#           git add .
+#           git commit -m "Auto-generated tests and fixes"
+#           git push origin $BRANCH_NAME
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          branch: ${{ env.BRANCH_NAME }}
-          title: "Automated Fixes & Tests"
-          body: "This PR contains auto-generated test cases and fixes for detected issues."
-          base: main
-          labels: automated, test-generation, bugfix
+#       - name: Create Pull Request
+#         uses: peter-evans/create-pull-request@v5
+#         with:
+#           branch: ${{ env.BRANCH_NAME }}
+#           title: "Automated Fixes & Tests"
+#           body: "This PR contains auto-generated test cases and fixes for detected issues."
+#           base: main
+#           labels: automated, test-generation, bugfix
