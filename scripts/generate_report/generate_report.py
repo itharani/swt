@@ -69,7 +69,7 @@ def generate_report():
     The generated report is saved to a markdown file.
     """
     # Load the system content (system prompt) from the 'report_prompt.md' file
-    with open("scripts/report_prompt.md", "r") as file:
+    with open("scripts/generate_report/report_prompt.md", "r") as file:
         system_prompt = file.read()  
 
     # Load the business requirements from the markdown file
