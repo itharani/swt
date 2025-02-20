@@ -69,21 +69,6 @@ python scripts/generate_tests/test_orchestrator.py --generate
 python debuggers/debugger_v2.py
 ```
 
-### **4️⃣ Create an Automated Pull Request**
-- Commits changes if modifications are detected  
-- Uses [`peter-evans/create-pull-request`](https://github.com/peter-evans/create-pull-request) to create a PR  
-
-```yaml
-- name: Create Pull Request
-  uses: peter-evans/create-pull-request@v5
-  with:
-    branch: auto-bdd-fixes-${{ github.run_id }}
-    title: "Automated Fixes & Tests"
-    body: "This PR contains auto-generated test cases and fixes for detected issues."
-    base: main
-    labels: automated, test-generation, bugfix
-```
-
 ---
 
 ## **🛠️ Setup & Installation**
