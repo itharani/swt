@@ -43,19 +43,3 @@ The application must implement the eligibility rules as described in Section 2.
 
 ### Output Display  
 The application must display the eligibility result and any relevant messages to the user.
-
-## 4. Non-Functional Requirements  
-
-### Performance  
-- The application must process user input and display results within 1 second.
-
-### Usability  
-- The application must provide clear and concise instructions for user input.
-
-### Maintainability  
-- The code must be well-documented and easy to modify.
-
-## 5. Assumptions  
-- The user will provide valid input (no error handling for invalid input types is required for this version).
-- The eligibility rules are fixed and will not change during the lifetime of the application.
-
