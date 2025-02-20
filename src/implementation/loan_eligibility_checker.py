@@ -7,6 +7,7 @@ class LoanEligibilityChecker:
     def is_eligible(self):
         """Check if the user is eligible for a loan."""
         reasons = []
+        
         if self.monthly_income <= 0:
             return False, "Monthly income must be a positive number."
         if self.credit_score < 300 or self.credit_score > 950:
